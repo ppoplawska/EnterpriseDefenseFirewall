@@ -41,11 +41,11 @@ unsigned int main_hook(unsigned int hooknum,
 	return NF_ACCEPT;
   }
   if(src_ip == *(unsigned int*)ip_address1){
-	printk(KERN_INFO "blacklisted ip found!\n");
+	printk(KERN_INFO "ufl ip is blocked!\n");
 	return NF_DROP;
   }
   if(src_ip == *(unsigned int*)ip_address2){
-	printk(KERN_INFO "yahoo.com ip found!\n");
+	printk(KERN_INFO "yahoo.com ip is blocked!\n");
 	return NF_DROP;
   }
 
