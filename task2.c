@@ -43,9 +43,12 @@ unsigned int main_hook(unsigned int hooknum,
  
   char* UFL_EDU = "128.227.9.48";
   char*	YAHOO_COM = "206.190.36.45";
- 
+  char*	CISE_UF = "128.227.248.40";
+	
+	char* VM2 = "10.0.2.4";
+	char* self = "10.0.2.15";
   //get source address
-  unsigned int src_ip = (unsigned int)ip_header->saddr;
+	
   if(!sock_buff){
      printk(KERN_INFO "socket buffer is empty\n");
      return NF_ACCEPT;
@@ -60,16 +63,71 @@ unsigned int main_hook(unsigned int hooknum,
   
   int ipSize = 15;
   char * str[ipSize];
+  
   snprintf(str, ipSize, "%pI4", &ip_header->saddr);
   
-  if(!strcmp(str, UFL_EDU) || !strcmp(str, YAHOO_COM)) // if we wnated to make this dynamic, register each of the banned IPS to an array
+  if(!strcmp(str, UFL_EDU) || !strcmp(str, YAHOO_COM) || !strcmp(str, CISE_UF) ) // if we wnated to make this dynamic, register each of the banned IPS to an array
 														// figure out how to get user input for dynamic execution (piping mostlikey)
   {
 		printk(KERN_INFO "Found blacklisted IP [ %s ] Dropping packet...\n", str);
 	  return NF_DROP; //drop it
   }
   
+//block incoming telnet
+	if(!strcmp(str, VM2))
+	{
+		if(ip_header->protocol == 6) //we got a TCP packet, proceed to further anaylise
+		{
+	
+			//we have the possible telnet connection b.w host and VM2
+			tcp_header= (struct tcphdr *)((__u32 *)ip_header+ ip_header->ihl); //this fixed the problem //figuire our the port 
+			int telnet = 23; //port to block (23 defaulted for telent)
+			
+			unsigned int dport = htons((unsigned short int) tcp_header->dest); 
+			//snprintf(port_string, pSize, "%s", &tcp_header->dest);	//extracting readable port info
+			printk(KERN_INFO "Found TCP packet from blacklisted IP [ %s : %u ]..analyzing further \n" , str, dport);
+			
+			
+			
+			if(dport == telnet)
+			{
+				printk(KERN_INFO "Found telnet packet (port 23) from blacklisted IP [ %s ]", str);
+				//telnet default matches incoming destination port, drop it
+				return NF_DROP;
+			}
+		}
+	}
 
+//block outgoing telnet
+  // get ip and anaylise
+  
+  snprintf(str, ipSize, "%pI4", &ip_header->daddr);
+	
+	if(!strcmp(str, self))
+	{
+		if(ip_header->protocol == 6) //we got a TCP packet, proceed to further anaylise
+		{
+	
+			//we have the possible telnet connection b.w host and VM2
+			tcp_header= (struct tcphdr *)((__u32 *)ip_header+ ip_header->ihl); //this fixed the problem //figuire our the port 
+			int telnet = 23; //port to block (23 defaulted for telent)
+			
+			unsigned int sport = htons((unsigned short int) tcp_header->source); 
+			//snprintf(port_string, pSize, "%s", &tcp_header->dest);	//extracting readable port info
+			printk(KERN_INFO "Found TCP packet transmission to blacklisted IP [ %s : %u ]..analyzing further \n" , str, sport);
+			
+			
+			
+			
+			if(sport == telnet)
+			{
+				printk(KERN_INFO "Found attempted telnet packet (port 23) transmission to blacklisted IP [ %s ]", str);
+				//telnet default matches incoming destination port, drop it
+				return NF_DROP;
+			}
+		}
+	}
+	
 
 printk(KERN_INFO "Did not hit any firewall rules, packet recieved...\n");
 return NF_ACCEPT;
