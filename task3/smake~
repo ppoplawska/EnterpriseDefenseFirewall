@@ -1,0 +1,19 @@
+#!/bin/bash
+#Make script that runs a clean and make on the specified modules.
+
+#You may need to dig in here and set your own 3.5.0-XX-generic folder
+#as well as the name of your repo folder.
+
+#TO RUN FROM COMMAND LINE: ./smake
+
+#Enjoy! -Troy
+
+echo 'Cleaning... '
+make clean -C /lib/modules/3.5.0-23-generic/build M=/home/seed/EnterpriseDefenseFirewall >/dev/null
+echo 'Done.'
+
+echo 'Compiling... '
+make -C /lib/modules/3.5.0-23-generic/build M=/home/seed/EnterpriseDefenseFirewall >/dev/null
+echo 'Done.'
+
+

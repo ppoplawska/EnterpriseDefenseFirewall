@@ -1,0 +1,13 @@
+#!/bin/bash
+#Make script that prints kernel module output and then clears buffer.
+
+#You may need to dig in here and set your own 3.5.0-XX-generic folder
+#as well as the name of your repo folder.
+
+#TO RUN FROM COMMAND LINE: ./sprintclr
+
+#Enjoy! -Troy
+
+dmesg -c | tail -1
+
+

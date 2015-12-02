@@ -1,0 +1,1 @@
+cmd_/home/seed/EnterpriseDefenseFirewall/task3/task3.ko := ld -r -m elf_i386 -T /usr/src/linux-headers-3.5.0-37-generic/scripts/module-common.lds --build-id  -o /home/seed/EnterpriseDefenseFirewall/task3/task3.ko /home/seed/EnterpriseDefenseFirewall/task3/task3.o /home/seed/EnterpriseDefenseFirewall/task3/task3.mod.o

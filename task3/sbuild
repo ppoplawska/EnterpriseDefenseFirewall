@@ -1,0 +1,26 @@
+#!/bin/bash
+#Build script that runs a clean, make, rmmod, and insmod command.
+#Only use this if you know for sure you want to inject this module!
+
+#You may need to dig in here and set your own 3.5.0-XX-generic folder
+#as well as the name of your repo folder.
+
+#TO RUN FROM COMMAND LINE: ./sbuild
+
+#Enjoy! -Troy
+
+echo 'Removing kernel module... '
+rmmod task3.ko >/dev/null
+echo 'Done.'
+
+echo 'Cleaning... '
+make clean -C /lib/modules/3.5.0-37-generic/build M=/home/seed/EnterpriseDefenseFirewall/task3 >/dev/null
+echo 'Done.'
+
+echo 'Compiling... '
+make -C /lib/modules/3.5.0-37-generic/build M=/home/seed/EnterpriseDefenseFirewall/task3 >/dev/null
+echo 'Done.'
+
+echo 'Inserting module... '
+insmod task3.ko >/dev/null
+echo 'Done.'
