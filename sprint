@@ -1,0 +1,13 @@
+#!/bin/bash
+#Make script that prints kernel module output.
+
+#You may need to dig in here and set your own 3.5.0-XX-generic folder
+#as well as the name of your repo folder.
+
+#TO RUN FROM COMMAND LINE: ./sprint
+
+#Enjoy! -Troy
+
+dmesg | tail -1
+
+
