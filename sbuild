@@ -14,11 +14,11 @@ rmmod task2.ko >/dev/null
 echo 'Done.'
 
 echo 'Cleaning... '
-make clean -C /lib/modules/3.5.0-23-generic/build M=/home/seed/EnterpriseDefenseFirewall >/dev/null
+make clean -C /lib/modules/3.5.0-37-generic/build M=/home/seed/EnterpriseDefenseFirewall >/dev/null
 echo 'Done.'
 
 echo 'Compiling... '
-make -C /lib/modules/3.5.0-23-generic/build M=/home/seed/EnterpriseDefenseFirewall >/dev/null
+make -C /lib/modules/3.5.0-37-generic/build M=/home/seed/EnterpriseDefenseFirewall >/dev/null
 echo 'Done.'
 
 echo 'Inserting module... '
